@@ -7,10 +7,11 @@ export const authController = {
   register: async (req: AuthRequest, res: Response) => {
     try {
       const { user, token } = await authService.register(req.body)
+      const isProd = process.env.NODE_ENV === 'production'
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000
       })
       res.status(201).json({ user, token })
@@ -22,10 +23,11 @@ export const authController = {
   login: async (req: AuthRequest, res: Response) => {
     try {
       const { user, token } = await authService.login(req.body)
+      const isProd = process.env.NODE_ENV === 'production'
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000
       })
       res.json({ user, token })
@@ -56,7 +58,12 @@ export const authController = {
   },
 
   logout: async (req: AuthRequest, res: Response) => {
-    res.clearCookie('token')
+    const isProd = process.env.NODE_ENV === 'production'
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax'
+    })
     res.json({ message: 'Logged out successfully' })
   }
 }
