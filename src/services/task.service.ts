@@ -8,8 +8,8 @@ const logTaskChange = async (taskId: string, userId: string, field: string, oldV
     taskId,
     userId,
     action: `Updated ${field}`,
-    oldValue: oldValue ? String(oldValue) : null,
-    newValue: newValue ? String(newValue) : null
+    oldValue: oldValue != null ? String(oldValue) : null,
+    newValue: newValue != null ? String(newValue) : null
   })
 }
 

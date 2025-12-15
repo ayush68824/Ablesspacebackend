@@ -1,3 +1,5 @@
+import { Request } from 'express'
+
 export enum Priority {
   Low = 'Low',
   Medium = 'Medium',
@@ -18,7 +20,7 @@ export interface UserPayload {
   name: string
 }
 
-export interface AuthRequest extends Express.Request {
+export type AuthRequest = Request & {
   user?: UserPayload
 }
 

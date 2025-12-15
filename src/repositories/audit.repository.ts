@@ -5,8 +5,8 @@ export const auditRepository = {
     taskId: string
     userId: string
     action: string
-    oldValue?: string
-    newValue?: string
+    oldValue?: string | null
+    newValue?: string | null
   }) => {
     return prisma.auditLog.create({ data })
   },
